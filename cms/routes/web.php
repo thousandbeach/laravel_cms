@@ -19,91 +19,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 // 本のダッシュボード表示
-Route::get('/', function(){
-    $books = Book::orderBy('created_at', 'asc')->get();
-    return view('books', ['books' => $books]);
-});
+Route::get('/', 'BooksController@index');
 
+// 新しい本を新規登録処理
+Route::post('/books', 'BooksController@store');
 
 // 本の情報の更新画面
-Route::post('/booksedit/{books}', function(Book $books){
-    // {books}id 値を取得 => Book$books id 値をの１レコード取得
-    return view('booksedit', ['book' => $books]);
-});
-
-
-
-
-// 新しい本を追加
-Route::post('/books', function(Request $request){
-    
-    // バリデーション
-    $validator = Validator::make($request->all(), [
-                        'item_name' => 'required|min:3|max:255',
-                        'item_number' => 'required|min:1|max:3',
-                        'item_amount' => 'required|max:6',
-                        'published' => 'required',
-                    ]);
-
-    // バリデーションエラー
-    if($validator->fails()){
-        return redirect('/')
-            ->withErrors($validator)
-            ->withInput();
-    }
-    
-    // Eloquent モデル 本の作成処理
-    $books = new Book;
-    $books->item_name = $request->item_name;
-    $books->item_number = $request->item_number;
-    $books->item_amount = $request->item_amount;
-    $books->published = $request->published;
-    $books->save();
-    
-    return redirect('/');  // 保存処理が終わったら「'/'」ルートへリダイレクトさせる
-
-
-});
-
+Route::post('/booksedit/{books}', 'BooksController@edit');
 
 // 本の情報の更新処理
-Route::post('/books/update', function(Request $request){
-    
-    // バリデーション
-    $validator = Validator::make($request->all(), [
-                        'id' => 'required',
-                        'item_name' => 'required | min:3 | max:255',
-                        'item_number' => 'required | min:1 | max:3',
-                        'item_amount' => 'required | max:6',
-                        'published' => 'required',
-                    ]);
-    
-    // バリデーションエラー                
-    if($validator->fails()){
-        return redirect('/')
-            ->withErrors($validator)
-            ->withInput();
-    }
-    
-    // Eloquent モデルを用いてDBのテーブルにあるデータを更新して保存
-    $books = Book::find($request->id);  // 更新処理には、ターゲットとして、id値が必須となる。id値がない場合は処理できない。
-    $books->item_name = $request->item_name;
-    $books->item_number = $request->item_number;
-    $books->item_amount = $request->item_amount;
-    $books->published = $request->published;
-    $books->save();
-    
-    return redirect('/');
-    
-    
-    
-});
-
+Route::post('/books/update', 'BooksController@update');
 
 // 本を削除
-Route::delete('/book/{book}', function(Book $book){
-    $book->delete();
-    return redirect('/');
-});
+Route::delete('/book/{book}', 'BooksController@destroy');
