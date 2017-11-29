@@ -34,6 +34,40 @@ Route::post('/booksedit/{books}', function(Book $books){
 });
 
 
+
+
+// 新しい本を追加
+Route::post('/books', function(Request $request){
+    
+    // バリデーション
+    $validator = Validator::make($request->all(), [
+                        'item_name' => 'required|min:3|max:255',
+                        'item_number' => 'required|min:1|max:3',
+                        'item_amount' => 'required|max:6',
+                        'published' => 'required',
+                    ]);
+
+    // バリデーションエラー
+    if($validator->fails()){
+        return redirect('/')
+            ->withErrors($validator)
+            ->withInput();
+    }
+    
+    // Eloquent モデル 本の作成処理
+    $books = new Book;
+    $books->item_name = $request->item_name;
+    $books->item_number = $request->item_number;
+    $books->item_amount = $request->item_amount;
+    $books->published = $request->published;
+    $books->save();
+    
+    return redirect('/');  // 保存処理が終わったら「'/'」ルートへリダイレクトさせる
+
+
+});
+
+
 // 本の情報の更新処理
 Route::post('/books/update', function(Request $request){
     
@@ -54,7 +88,7 @@ Route::post('/books/update', function(Request $request){
     }
     
     // Eloquent モデルを用いてDBのテーブルにあるデータを更新して保存
-    $books = Book::find($request->id);
+    $books = Book::find($request->id);  // 更新処理には、ターゲットとして、id値が必須となる。id値がない場合は処理できない。
     $books->item_name = $request->item_name;
     $books->item_number = $request->item_number;
     $books->item_amount = $request->item_amount;
@@ -65,37 +99,6 @@ Route::post('/books/update', function(Request $request){
     
     
     
-});
-
-// 新しい本を追加
-Route::post('/books', function(Request $request){
-    
-    // バリデーション
-    $validator = Validator::make($request->all(), [
-                        'item_name' => 'required|min:3|max:255',
-                        'item_number' => 'required|min:1|max:3',
-                        'item_amount' => 'required|max:6',
-                        'published' => 'required',
-                    ]);
-
-    // バリデーションエラー
-    if($validator->fails()){
-        return redirect('/')
-            ->withErrors($validator)
-            ->withInput();
-    }
-    
-    // Eloquent モデル
-    $books = new Book;
-    $books->item_name = $request->item_name;
-    $books->item_number = $request->item_number;
-    $books->item_amount = $request->item_amount;
-    $books->published = $request->published;
-    $books->save();
-    
-    return redirect('/');  // 保存処理が終わったら「'/'」ルートへリダイレクトさせる
-
-
 });
 
 
