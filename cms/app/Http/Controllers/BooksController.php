@@ -10,7 +10,7 @@ use Auth; // 藤原_追加 Auth のデータ取得
 
 class BooksController extends Controller
 {
-    // Auth
+    // make:auth で作成したHomeController.php に書かれているコンストラクタ（クラスが呼ばれたら自動で最初に実行される。尚、認証していたら表示するという意味）Auth
     public function __construct()
     {
         $this->middleware('auth');

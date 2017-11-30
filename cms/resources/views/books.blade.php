@@ -6,15 +6,13 @@
     <!-- Bootstrap の定形コード -->
     <div class="panel-body">
         <!-- Auth 表示 -->
-        @if(isset($auths))
-            @foreach($auths as $auth)
-                <div>
-                    <span>{{ $auths->id }}</span>
-                    <span>{{ $auths->name }}</span>
-                    <span>{{ $auths->email }}</span>
-                </div>
-            @endforeach
-        @endif
+        @isset($auths)
+            <div>
+                <span>ログイン ID： {{ $auths->id }} &nbsp;&nbsp;&nbsp;</span><br>
+                <span>お名前： {{ $auths->name }} &nbsp;&nbsp;&nbsp;</span><br>
+                <span>メールアドレス： {{ $auths->email }} &nbsp;&nbsp;&nbsp;</span><br><br><br>
+            </div>
+        @endisset
         <!-- /Auth 表示 -->
         <!-- バリデーションエラーの表示に使用 -->
         @include('common.errors')
