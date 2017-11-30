@@ -37,7 +37,7 @@
             
             <!-- Save ボタン/Back ボタン -->
             <div class="well well-sm">
-                <button ="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Save</button>
                 <a class="btn btn-link pull-right" href="{{ url('/') }}">
                     <i class="glyphicon glyphicon-backward"></i> Back
                 </a>

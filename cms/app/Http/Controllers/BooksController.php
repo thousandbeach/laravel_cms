@@ -6,15 +6,22 @@ use Illuminate\Http\Request;
 
 use App\Book;  // 藤原_追加 モデル利用のため
 use Validator; // 藤原_追加 バリデーション使用のため
+use Auth; // 藤原_追加 Auth のデータ取得
 
 class BooksController extends Controller
 {
+    // Auth
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     // 本のダッシュボード表示
     public function index(Request $request)
     {
         $books = Book::orderBy('created_at', 'asc')->paginate(3);
-        return view('books', ['books' => $books]);
+        $auths = Auth::user(); // $auths に id, name, mail等の複数値を代入
+        return view('books', ['books' => $books, 'auths' => $auths]);
     }
 
 

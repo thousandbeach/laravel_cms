@@ -2,11 +2,23 @@
 
 @section('content')
 
+    
     <!-- Bootstrap の定形コード -->
     <div class="panel-body">
+        <!-- Auth 表示 -->
+        @if(isset($auths))
+            @foreach($auths as $auth)
+                <div>
+                    <span>{{ $auths->id }}</span>
+                    <span>{{ $auths->name }}</span>
+                    <span>{{ $auths->email }}</span>
+                </div>
+            @endforeach
+        @endif
+        <!-- /Auth 表示 -->
         <!-- バリデーションエラーの表示に使用 -->
         @include('common.errors')
-        <!-- バリデーションエラーの表示に使用 -->
+        <!-- /バリデーションエラーの表示に使用 -->
         
         <!-- 本登録フォーム -->
         <form action="{{ url('books') }}" method="POST" class="form-horizontal">
