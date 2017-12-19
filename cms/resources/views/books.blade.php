@@ -13,6 +13,7 @@
                 <span>メールアドレス： {{ $auths->email }} &nbsp;&nbsp;&nbsp;</span><br><br><br>
             </div>
         @endisset
+        
         <!-- /Auth 表示 -->
         <!-- バリデーションエラーの表示に使用 -->
         @include('common.errors')
